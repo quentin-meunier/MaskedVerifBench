@@ -1,0 +1,224 @@
+# File Sbox3.py
+#
+# Copyright (C) 2021, Sorbonne Universite, LIP6
+# This file is part of the MaskedVerifBench project, under the GPL v3.0 license
+# See https://www.gnu.org/licenses/gpl-3.0.en.html for license information
+# SPDX-License-Identifier: GPL-3.0-only
+# Author(s): Etienne Pons
+
+
+from leakage_verif import *
+from maskedbench_utils import *
+
+x = symbol('x', 'S', 8)
+x_0 = symbol('x_0', 'M', 8)
+rh_0_0_1 = symbol('rh_0_0_1', 'M', 8)
+rhp_0_0_1 = symbol('rhp_0_0_1', 'M', 8)
+rh_1_0_1 = symbol('rh_1_0_1', 'M', 8)
+rhp_1_0_1 = symbol('rhp_1_0_1', 'M', 8)
+r_0_1_0 = symbol('r_0_1_0', 'M', 8)
+r_0_1_1 = symbol('r_0_1_1', 'M', 8)
+
+x_1 = x ^ x_0
+x_1 = verif(x_1, 1, 65)
+z_0 = x_0 * x_0
+z_0 = verif(z_0, 2, 65)
+z_1 = x_1 * x_1
+z_1 = verif(z_1, 3, 65)
+tmp_h_0 = rhp_0_0_1 * rhp_0_0_1
+tmp_h_0 = verif(tmp_h_0, 4, 65)
+tmp_h_0 = x_0 * tmp_h_0
+tmp_h_0 = verif(tmp_h_0, 5, 65)
+tmp_h_0 = rh_0_0_1 ^ tmp_h_0
+tmp_h_0 = verif(tmp_h_0, 6, 65)
+tmp_h_1 = x_0 * x_0
+tmp_h_1 = verif(tmp_h_1, 7, 65)
+tmp_h_1 = rhp_0_0_1 * tmp_h_1
+tmp_h_1 = verif(tmp_h_1, 8, 65)
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+tmp_h_0 = verif(tmp_h_0, 9, 65)
+tmp_h_1 = x_1 ^ rhp_0_0_1
+tmp_h_1 = verif(tmp_h_1, 10, 65)
+tmp_h_1 = tmp_h_1 * tmp_h_1
+tmp_h_1 = verif(tmp_h_1, 11, 65)
+tmp_h_1 = x_0 * tmp_h_1
+tmp_h_1 = verif(tmp_h_1, 12, 65)
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+tmp_h_0 = verif(tmp_h_0, 13, 65)
+tmp_h_2 = x_0 * x_0
+tmp_h_2 = verif(tmp_h_2, 14, 65)
+tmp_h_1 = x_1 ^ rhp_0_0_1
+tmp_h_1 = verif(tmp_h_1, 15, 65)
+tmp_h_1 = tmp_h_1 * tmp_h_2
+tmp_h_1 = verif(tmp_h_1, 16, 65)
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+tmp_h_0 = verif(tmp_h_0, 17, 65)
+rh_0_1_0 = tmp_h_0
+rh_0_1_0 = verif(rh_0_1_0, 18, 65)
+tmp_h_0 = x_0 * x_0
+tmp_h_0 = verif(tmp_h_0, 19, 65)
+y_0 = x_0 * tmp_h_0
+y_0 = verif(y_0, 20, 65)
+y_0 = y_0 ^ rh_0_0_1
+y_0 = verif(y_0, 21, 65)
+tmp_h_0 = x_1 * x_1
+tmp_h_0 = verif(tmp_h_0, 22, 65)
+y_1 = x_1 * tmp_h_0
+y_1 = verif(y_1, 23, 65)
+y_1 = y_1 ^ rh_0_1_0
+y_1 = verif(y_1, 24, 65)
+w_0 = y_0 * y_0 * y_0 * y_0
+w_0 = verif(w_0, 25, 65)
+w_1 = y_1 * y_1 * y_1 * y_1
+w_1 = verif(w_1, 26, 65)
+tmp_h_0 = rhp_1_0_1 * rhp_1_0_1 * rhp_1_0_1 * rhp_1_0_1
+tmp_h_0 = verif(tmp_h_0, 27, 65)
+tmp_h_0 = y_0 * tmp_h_0
+tmp_h_0 = verif(tmp_h_0, 28, 65)
+tmp_h_0 = rh_1_0_1 ^ tmp_h_0
+tmp_h_0 = verif(tmp_h_0, 29, 65)
+tmp_h_1 = y_0 * y_0 * y_0 * y_0
+tmp_h_1 = verif(tmp_h_1, 30, 65)
+tmp_h_1 = rhp_1_0_1 * tmp_h_1
+tmp_h_1 = verif(tmp_h_1, 31, 65)
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+tmp_h_0 = verif(tmp_h_0, 32, 65)
+tmp_h_1 = y_1 ^ rhp_1_0_1
+tmp_h_1 = verif(tmp_h_1, 33, 65)
+tmp_h_1 = tmp_h_1 * tmp_h_1 * tmp_h_1 * tmp_h_1
+tmp_h_1 = verif(tmp_h_1, 34, 65)
+tmp_h_1 = y_0 * tmp_h_1
+tmp_h_1 = verif(tmp_h_1, 35, 65)
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+tmp_h_0 = verif(tmp_h_0, 36, 65)
+tmp_h_2 = y_0 * y_0 * y_0 * y_0
+tmp_h_2 = verif(tmp_h_2, 37, 65)
+tmp_h_1 = y_1 ^ rhp_1_0_1
+tmp_h_1 = verif(tmp_h_1, 38, 65)
+tmp_h_1 = tmp_h_1 * tmp_h_2
+tmp_h_1 = verif(tmp_h_1, 39, 65)
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+tmp_h_0 = verif(tmp_h_0, 40, 65)
+rh_1_1_0 = tmp_h_0
+rh_1_1_0 = verif(rh_1_1_0, 41, 65)
+tmp_h_0 = y_0 * y_0 * y_0 * y_0
+tmp_h_0 = verif(tmp_h_0, 42, 65)
+y_0 = y_0 * tmp_h_0
+y_0 = verif(y_0, 43, 65)
+y_0 = y_0 ^ rh_1_0_1
+y_0 = verif(y_0, 44, 65)
+tmp_h_0 = y_1 * y_1 * y_1 * y_1
+tmp_h_0 = verif(tmp_h_0, 45, 65)
+y_1 = y_1 * tmp_h_0
+y_1 = verif(y_1, 46, 65)
+y_1 = y_1 ^ rh_1_1_0
+y_1 = verif(y_1, 47, 65)
+y_0 = y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0
+y_0 = verif(y_0, 48, 65)
+y_1 = y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1
+y_1 = verif(y_1, 49, 65)
+tmp_secMult_i_j = y_0 * w_1
+tmp_secMult_i_j = verif(tmp_secMult_i_j, 50, 65)
+tmp_secMult_j_i = y_1 * w_0
+tmp_secMult_j_i = verif(tmp_secMult_j_i, 51, 65)
+r_1_0 = r_0_1_0 ^ tmp_secMult_i_j
+r_1_0 = verif(r_1_0, 52, 65)
+r_1_0 = r_1_0 ^ tmp_secMult_j_i
+r_1_0 = verif(r_1_0, 53, 65)
+y_0 = y_0 * w_0
+y_0 = verif(y_0, 54, 65)
+y_0 = y_0 ^ r_0_1_0
+y_0 = verif(y_0, 55, 65)
+y_1 = y_1 * w_1
+y_1 = verif(y_1, 56, 65)
+y_1 = y_1 ^ r_1_0
+y_1 = verif(y_1, 57, 65)
+tmp_secMult_i_j = y_0 * z_1
+tmp_secMult_i_j = verif(tmp_secMult_i_j, 58, 65)
+tmp_secMult_j_i = y_1 * z_0
+tmp_secMult_j_i = verif(tmp_secMult_j_i, 59, 65)
+r_1_0 = r_0_1_1 ^ tmp_secMult_i_j
+r_1_0 = verif(r_1_0, 60, 65)
+r_1_0 = r_1_0 ^ tmp_secMult_j_i
+r_1_0 = verif(r_1_0, 61, 65)
+y_0 = y_0 * z_0
+y_0 = verif(y_0, 62, 65)
+y_0 = y_0 ^ r_0_1_1
+y_0 = verif(y_0, 63, 65)
+y_1 = y_1 * z_1
+y_1 = verif(y_1, 64, 65)
+y_1 = y_1 ^ r_1_0
+y_1 = verif(y_1, 65, 65)
+print_results()
+
+
+
+"""
+
+x_1 = x ^ x_0
+z_0 = x_0 * x_0
+z_1 = x_1 * x_1
+tmp_h_0 = rhp_0_0_1 * rhp_0_0_1
+tmp_h_0 = x_0 * tmp_h_0
+tmp_h_0 = rh_0_0_1 ^ tmp_h_0
+tmp_h_1 = x_0 * x_0
+tmp_h_1 = rhp_0_0_1 * tmp_h_1
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+tmp_h_1 = x_1 ^ rhp_0_0_1
+tmp_h_1 = tmp_h_1 * tmp_h_1
+tmp_h_1 = x_0 * tmp_h_1
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+tmp_h_2 = x_0 * x_0
+tmp_h_1 = x_1 ^ rhp_0_0_1
+tmp_h_1 = tmp_h_1 * tmp_h_2
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+rh_0_1_0 = tmp_h_0
+tmp_h_0 = x_0 * x_0
+y_0 = x_0 * tmp_h_0
+y_0 = y_0 ^ rh_0_0_1
+tmp_h_0 = x_1 * x_1
+y_1 = x_1 * tmp_h_0
+y_1 = y_1 ^ rh_0_1_0
+w_0 = y_0 * y_0 * y_0 * y_0
+w_1 = y_1 * y_1 * y_1 * y_1
+tmp_h_0 = rhp_1_0_1 * rhp_1_0_1 * rhp_1_0_1 * rhp_1_0_1
+tmp_h_0 = y_0 * tmp_h_0
+tmp_h_0 = rh_1_0_1 ^ tmp_h_0
+tmp_h_1 = y_0 * y_0 * y_0 * y_0
+tmp_h_1 = rhp_1_0_1 * tmp_h_1
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+tmp_h_1 = y_1 ^ rhp_1_0_1
+tmp_h_1 = tmp_h_1 * tmp_h_1 * tmp_h_1 * tmp_h_1
+tmp_h_1 = y_0 * tmp_h_1
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+tmp_h_2 = y_0 * y_0 * y_0 * y_0
+tmp_h_1 = y_1 ^ rhp_1_0_1
+tmp_h_1 = tmp_h_1 * tmp_h_2
+tmp_h_0 = tmp_h_0 ^ tmp_h_1
+rh_1_1_0 = tmp_h_0
+tmp_h_0 = y_0 * y_0 * y_0 * y_0
+y_0 = y_0 * tmp_h_0
+y_0 = y_0 ^ rh_1_0_1
+tmp_h_0 = y_1 * y_1 * y_1 * y_1
+y_1 = y_1 * tmp_h_0
+y_1 = y_1 ^ rh_1_1_0
+y_0 = y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0 * y_0
+y_1 = y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1 * y_1
+tmp_secMult_i_j = y_0 * w_1
+tmp_secMult_j_i = y_1 * w_0
+r_1_0 = r_0_1_0 ^ tmp_secMult_i_j
+r_1_0 = r_1_0 ^ tmp_secMult_j_i
+y_0 = y_0 * w_0
+y_0 = y_0 ^ r_0_1_0
+y_1 = y_1 * w_1
+y_1 = y_1 ^ r_1_0
+tmp_secMult_i_j = y_0 * z_1
+tmp_secMult_j_i = y_1 * z_0
+r_1_0 = r_0_1_1 ^ tmp_secMult_i_j
+r_1_0 = r_1_0 ^ tmp_secMult_j_i
+y_0 = y_0 * z_0
+y_0 = y_0 ^ r_0_1_1
+y_1 = y_1 * z_1
+y_1 = y_1 ^ r_1_0
+
+"""

@@ -1,0 +1,40 @@
+(* File P8.mv *)
+(*                                                                                       *)
+(* Copyright (C) 2021, Sorbonne Universite, LIP6                                         *)
+(* This file is part of the MaskedVerifBench project, under the GPL v3.0 license         *)
+(* See https://www.gnu.org/licenses/gpl-3.0.en.html for license information              *)
+(* SPDX-License-Identifier: GPL-3.0-only                                                 *)
+(* Author(s): Etienne Pons                                                               *)
+
+proc MAIN:
+	inputs: ka[0:1], kb[0:1], kc[0:1]
+	outputs: sortie[0]
+	randoms: r1, r2, r3, r4;
+
+	zero = {(0b0:w1)};
+	un = {(0b1:w1)};
+
+	n01 = { ~r2 };
+	t1 = { n01 * r3 };
+	n04 = { (kc1 + kc0) + r3 };
+	t2 = { r2 * n04 };
+	t3 = { r1 + zero };
+	t4 = { (ka1 + ka0) + r1 };
+	n07 = { (kb1 + kb0) + r2 };
+	n08 = { ~n07 };
+	n09 = { (kc1 + kc0) + r3 };
+	t5 = { n08 * n09 };
+	n12 = { (kb1 + kb0) + r2 };
+	t6 = { n12 * r3 };
+	n14 = { t2 + t6 };
+	n15 = { t1 + t5 };
+	n11 = { n14 + n15 };
+	n03 = { n11 + r4 };
+	n16 = { n03 + t4 };
+	n17 = { n16 + t3 };
+	sortie0 = { n17 };
+end
+
+verbose 1
+
+Probing MAIN

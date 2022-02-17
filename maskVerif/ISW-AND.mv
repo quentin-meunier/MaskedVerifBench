@@ -1,0 +1,80 @@
+(* File ISW-AND.mv *)
+(*                                                                                       *)
+(* Copyright (C) 2021, Sorbonne Universite, LIP6                                         *)
+(* This file is part of the MaskedVerifBench project, under the GPL v3.0 license         *)
+(* See https://www.gnu.org/licenses/gpl-3.0.en.html for license information              *)
+(* SPDX-License-Identifier: GPL-3.0-only                                                 *)
+(* Author(s): Etienne Pons                                                               *)
+
+proc ISW_AND: 
+  inputs: a[0:1], b[0:1]
+  outputs: c[0:1]
+  randoms: r; 
+
+  c[0] := a[0] * b[0];
+  a0b1 := a[0] * b[1];
+  a1b0 := a[1] * b[0];
+  c[1] := a[1] * b[1];
+  aux  := r + a0b1;
+  aux  := aux + a1b0;
+  c[0] := c[0] + r;
+  c[1] := c[1] + aux;
+end
+
+verbose 2
+
+SNI ISW_AND
+
+proc ISW_AND_G:
+  inputs: a[0:1], b[0:1]
+  outputs: c[0:1]
+  randoms: r;
+
+  c[0] =![a[0] * b[0]];
+  a0b1 =![a[0] * b[1]];
+  a1b0 =![a[1] * b[0]];
+  c[1] =![ a[1] * b[1]];
+  aux  =![r + a0b1];
+  aux  =![aux + a1b0];
+  c[0] =![c[0] + r];
+  c[1] =![ c[1] + aux];
+end
+
+(*
+Probing ISW_AND_G
+NI ISW_AND_G
+SNI ISW_AND_G
+
+proc ISW_AND_2: 
+  inputs: a[0:2], b[0:2]
+  outputs: c[0:2]
+  randoms: r01, r02, r12;
+
+  a0b1 := a[0] * b[1];
+  a1b0 := a[1] * b[0];
+  a0b2 := a[0] * b[2];
+  a2b0 := a[2] * b[0];
+  a1b2 := a[1] * b[2];
+  a2b1 := a[2] * b[1];
+  r10 := r01 + a0b1;
+  r10 := r10 + a1b0;
+  r20 := r02 + a0b2;
+  r20 := r20 + a2b0;
+  r21 := r12 + a1b2;
+  r21 := r21 + a2b1;
+  c[0] := a[0] * b[0];
+  c[0] := c[0] + r01;
+  c[0] := c[0] + r02;
+  c[1] := a[1] * b[1];
+  c[1] := c[1] + r10;
+  c[1] := c[1] + r12;
+  c[2] := a[2] * b[2];
+  c[2] := c[2] + r20;
+  c[2] := c[2] + r21;
+end
+
+noglitch Probing ISW_AND_2
+noglitch NI ISW_AND_2
+noglitch SNI ISW_AND_2
+
+*)

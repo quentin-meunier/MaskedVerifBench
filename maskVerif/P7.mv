@@ -1,0 +1,33 @@
+(* File P7.mv *)
+(*                                                                                       *)
+(* Copyright (C) 2021, Sorbonne Universite, LIP6                                         *)
+(* This file is part of the MaskedVerifBench project, under the GPL v3.0 license         *)
+(* See https://www.gnu.org/licenses/gpl-3.0.en.html for license information              *)
+(* SPDX-License-Identifier: GPL-3.0-only                                                 *)
+(* Author(s): Etienne Pons                                                               *)
+
+proc MAIN:
+	inputs: ka[0:1], kb[0:1]
+	outputs: sortie[0]
+	randoms: r1, r2, r3;
+
+	zero = {(0b0:w1)};
+	un = {(0b1:w1)};
+
+	n01 = { (ka1 + ka0) + r1 };
+	n02 = { (kb1 + kb0) + r2 };
+	n03 = { n01 * n02 };
+	n04 = { (ka1 + ka0) + r1 };
+	n05 = { r2 * n04 };
+	n06 = { r1 * r2 };
+	n07 = { n06 + r3 };
+	n08 = { n05 * n07 }; n08 = { ~n08 };
+	n09 = { (kb1 + kb0) + r2 };
+	n10 = { r1 * n09 };
+	n11 = { n03 + n10 };
+	sortie0 = { n11 };
+end
+
+verbose 1
+
+Probing MAIN

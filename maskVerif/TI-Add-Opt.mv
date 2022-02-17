@@ -1,0 +1,103 @@
+(* File TI-Add-Opt.mv *)
+(*                                                                                       *)
+(* Copyright (C) 2021, Sorbonne Universite, LIP6                                         *)
+(* This file is part of the MaskedVerifBench project, under the GPL v3.0 license         *)
+(* See https://www.gnu.org/licenses/gpl-3.0.en.html for license information              *)
+(* SPDX-License-Identifier: GPL-3.0-only                                                 *)
+(* Author(s): Etienne Pons                                                               *)
+
+
+proc MAIN:
+	inputs: w32 x[0:1], w32 y[0:1]
+	outputs: w32 regz[0], w32 regu[0], w32 regd[0], w32 regt[0], w32 regq[0], w32 regc[0], w32 regsi[0], w32 regse[0], w32 regh[0], w32 regn[0], w32 reguz[0], w32 reguu[0], w32 regud[0]
+	randoms: w32 r;
+
+	regz0 = { x0 };
+	regu0 = { x1 };
+	regd0 = { y0 };
+	regt0 = { y1 };
+
+	regud0 = { (0x00000001:w32) &w32 r };
+	reguu0 = { ~w32(~w32(regud0) &w32 ~w32(regz0 >> 1)) };
+	regud0 = { regz0 << 31 };
+	regq0 = { ~w32(~w32(regz0) &w32 regt0) };
+	regsi0 = { regd0 &w32 regz0 };
+	regc0 = { ~w32(~w32(regu0) &w32 regt0) };
+	regse0 = { regd0 &w32 regu0 };
+	regc0 = { regse0 ^w32 regc0 };
+	regq0 = { regsi0 ^w32 regq0 };
+	regd0 = { regd0 ^w32 regz0 };
+	regt0 = { regu0 ^w32 regt0 };
+	regc0 = { regc0 ^w32 reguu0 };
+	regq0 = { reguu0 ^w32 regq0 };
+	regh0 = { regt0 &w32 (regq0 << 1) };
+	regn0 = { regd0 &w32 (regq0 << 1) };
+	regq0 = { regn0 ^w32 regq0 };
+	regq0 = { regh0 ^w32 regq0 };
+	reguz0 = { regt0 &w32 (regc0 << 1) };
+	reguu0 = { regd0 &w32 (regc0 << 1) };
+	regc0 = { reguz0 ^w32 regc0 };
+	regc0 = { reguu0 ^w32 regc0 };
+	regh0 = { ~w32(~w32(regt0) &w32 (regt0 << 1)) };
+	reguz0 = { regt0 &w32 (regd0 << 1) };
+	regn0 = { ~w32(~w32(regd0) &w32 (regt0 << 1)) };
+	reguu0 = { regd0 &w32 (regd0 << 1) };
+	regse0 = { reguz0 ^w32 regh0 };
+	regsi0 = { regn0 ^w32 reguu0 };
+	regh0 = { regse0 &w32 (regq0 << 2) };
+	regn0 = { regsi0 &w32 (regq0 << 2) };
+	regq0 = { regn0 ^w32 regq0 };
+	regq0 = { regh0 ^w32 regq0 };
+	reguz0 = { regse0 &w32 (regc0 << 2) };
+	reguu0 = { regsi0 &w32 (regc0 << 2) };
+	regc0 = { reguz0 ^w32 regc0 };
+	regc0 = { reguu0 ^w32 regc0 };
+	regh0 = { ~w32(~w32(regse0) &w32 (regse0 << 2)) };
+	reguz0 = { regse0 &w32 (regsi0 << 2) };
+	regn0 = { ~w32(~w32(regsi0) &w32 (regse0 << 2)) };
+	reguu0 = { regsi0 &w32 (regsi0 << 2) };
+	regse0 = { reguz0 ^w32 regh0 };
+	regsi0 = { regn0 ^w32 reguu0 };
+	regh0 = { regse0 &w32 (regq0 << 4) };
+	regn0 = { regsi0 &w32 (regq0 << 4) };
+	regq0 = { regn0 ^w32 regq0 };
+	regq0 = { regh0 ^w32 regq0 };
+	reguz0 = { regse0 &w32 (regc0 << 4) };
+	reguu0 = { regsi0 &w32 (regc0 << 4) };
+	regc0 = { reguz0 ^w32 regc0 };
+	regc0 = { reguu0 ^w32 regc0 };
+	regh0 = { ~w32(~w32(regse0) &w32 (regse0 << 4)) };
+	reguz0 = { regse0 &w32 (regsi0 << 4) };
+	regn0 = { ~w32(~w32(regsi0) &w32 (regse0 << 4)) };
+	reguu0 = { regsi0 &w32 (regsi0 << 4) };
+	regse0 = { reguz0 ^w32 regh0 };
+	regsi0 = { regn0 ^w32 reguu0 };
+	regh0 = { regse0 &w32 (regq0 << 8) };
+	regn0 = { regsi0 &w32 (regq0 << 8) };
+	regq0 = { regn0 ^w32 regq0 };
+	regq0 = { regh0 ^w32 regq0 };
+	reguz0 = { regse0 &w32 (regc0 << 8) };
+	reguu0 = { regsi0 &w32 (regc0 << 8) };
+	regc0 = { reguz0 ^w32 regc0 };
+	regc0 = { reguu0 ^w32 regc0 };
+	regh0 = { ~w32(~w32(regse0) &w32 (regse0 << 8)) };
+	reguz0 = { regse0 &w32 (regsi0 << 8) };
+	regn0 = { ~w32(~w32(regsi0) &w32 (regse0 << 8)) };
+	reguu0 = { regsi0 &w32 (regsi0 << 8) };
+	regse0 = { reguz0 ^w32 regh0 };
+	regsi0 = { regn0 ^w32 reguu0 };
+	regn0 = { regse0 &w32 (regq0 << 16) };
+	regh0 = { regsi0 &w32 (regq0 << 16) };
+	regq0 = { regn0 ^w32 regq0 };
+	regq0 = { regh0 ^w32 regq0 };
+	reguu0 = { regse0 &w32 (regc0 << 16) };
+	reguz0 = { regsi0 &w32 (regc0 << 16) };
+	regc0 = { reguu0 ^w32 regc0 };
+	regc0 = { reguz0 ^w32 regc0 };
+	regz0 = { regd0 ^w32 (regq0 << 1) };
+	regu0 = { regt0 ^w32 (regc0 << 1) };
+	res = { regz0 ^w32 regu0 };
+end
+
+verbose 0
+Probing MAIN

@@ -1,0 +1,55 @@
+(* File P1.mv *)
+(*                                                                                       *)
+(* Copyright (C) 2021, Sorbonne Universite, LIP6                                         *)
+(* This file is part of the MaskedVerifBench project, under the GPL v3.0 license         *)
+(* See https://www.gnu.org/licenses/gpl-3.0.en.html for license information              *)
+(* SPDX-License-Identifier: GPL-3.0-only                                                 *)
+(* Author(s): Etienne Pons                                                               *)
+
+proc MAIN:
+	public inputs: x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15
+	inputs: ka[0:1], kb[0:1], kc[0:1], kd[0:1], ke[0:1], kf[0:1], kg[0:1], kh[0:1], ki[0:1], kj[0:1], kk[0:1], kl[0:1], km[0:1], kn[0:1], ko[0:1], kp[0:1]
+	outputs: sortie[0]
+	randoms: r0, r1, r2, r3, r4, r5, r6, r7, r8, r9, r10, r11, r12, r13, r14, r15;
+
+	zero = {(0b0:w1)};
+	un = {(0b1:w1)};
+
+	n011 = { (ka1 + ka0) + x0 };
+	n012 = { n011 + r0 };
+	n021 = { (kb1 + kb0) + x1 };
+	n022 = { n021 + r1 };
+	n031 = { (kc1 + kc0) + x2 };
+	n032 = { n031 + r2 };
+	n041 = { (kd1 + kd0) + x3 };
+	n042 = { n041 + r3 };
+	n051 = { (ke1 + ke0) + x4 };
+	n052 = { n051 + r4 };
+	n061 = { (kf1 + kf0) + x5 };
+	n062 = { n061 + r5 };
+	n071 = { (kg1 + kg0) + x6 };
+	n072 = { n071 + r6 };
+	n081 = { (kh1 + kh0) + x7 };
+	n082 = { n081 + r7 };
+	n091 = { (ki1 + ki0) + x8 };
+	n092 = { n091 + r8 };
+	n101 = { (kj1 + kj0) + x8 };
+	n102 = { n101 + r9 };
+	n111 = { (kk1 + kk0) + x10 };
+	n112 = { n111 + r10 };
+	n121 = { (kl1 + kl0) + x11 };
+	n122 = { n121 + r11 };
+	n131 = { (km1 + km0) + x12 };
+	n132 = { n131 + r12 };
+	n141 = { (kn1 + kn0) + x13 };
+	n142 = { n141 + r13 };
+	n151 = { (ko1 + ko0) + x14 };
+	n152 = { n151 + r14 };
+	n161 = { (kp1 + kp0) + x15 };
+	n162 = { n161 + r15 };
+	sortie0 = { n012 + n022 + n032 + n042 + n052 + n062 + n072 + n082 + n092 + n102 + n112 + n122 + n132 + n142 + n152 + n162 };
+end
+
+verbose 1
+
+Probing MAIN

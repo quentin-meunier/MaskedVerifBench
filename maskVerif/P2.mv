@@ -1,0 +1,46 @@
+(* File P2.mv *)
+(*                                                                                       *)
+(* Copyright (C) 2021, Sorbonne Universite, LIP6                                         *)
+(* This file is part of the MaskedVerifBench project, under the GPL v3.0 license         *)
+(* See https://www.gnu.org/licenses/gpl-3.0.en.html for license information              *)
+(* SPDX-License-Identifier: GPL-3.0-only                                                 *)
+(* Author(s): Etienne Pons                                                               *)
+
+proc MAIN:
+	inputs: ka[0:1], kb[0:1], kc[0:1], kd[0:1], ke[0:1], kf[0:1], kg[0:1], kh[0:1]
+	outputs: sortie[0]
+	randoms: r11, r12, r13, r14, r15, r16, r17, r18, r21, r22, r23, r24, r25, r26, r27, r28;
+
+	zero = {(0b0:w1)};
+	un = {(0b1:w1)};
+
+	n11 = { (ka1 + ka0) + r11 };
+	n12 = { (kb1 + kb0) + r12 };
+	n13 = { (kc1 + kc0) + r13 };
+	n14 = { (kd1 + kd0) + r14 };
+	n15 = { (ke1 + ke0) + r15 };
+	n16 = { (kf1 + kf0) + r16 };
+	n17 = { (kg1 + kg0) + r17 };
+	n18 = { (kh1 + kh0) + r18 };
+	n21 = { n11 + r11 };
+	n22 = { n12 + r12 };
+	n23 = { n13 + r13 };
+	n24 = { n14 + r14 };
+	n25 = { n15 + r15 };
+	n26 = { n16 + r16 };
+	n27 = { n17 + r17 };
+	n28 = { n18 + r18 };
+	n31 = { n21 + r21 };
+	n32 = { n22 + r22 };
+	n33 = { n23 + r23 };
+	n34 = { n24 + r24 };
+	n35 = { n25 + r25 };
+	n36 = { n26 + r26 };
+	n37 = { n27 + r27 };
+	n38 = { n28 + r28 };
+	sortie0 = { n31 + n32 + n33 + n34 + n35 + n36 + n37 + n38 };
+end
+
+verbose 1
+
+Probing MAIN

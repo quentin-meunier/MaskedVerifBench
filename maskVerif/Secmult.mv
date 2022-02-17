@@ -1,0 +1,448 @@
+(* File Secmult.mv *)
+(*                                                                                       *)
+(* Copyright (C) 2021, Sorbonne Universite, LIP6                                         *)
+(* This file is part of the MaskedVerifBench project, under the GPL v3.0 license         *)
+(* See https://www.gnu.org/licenses/gpl-3.0.en.html for license information              *)
+(* SPDX-License-Identifier: GPL-3.0-only                                                 *)
+(* Author(s): Etienne Pons                                                               *)
+
+proc MAIN:
+	inputs: keyIa[0:1], keyIb[0:1], keyIc[0:1], keyId[0:1], keyIe[0:1], keyIf[0:1], keyIg[0:1], keyIh[0:1], keyIIa[0:1], keyIIb[0:1], keyIIc[0:1], keyIId[0:1], keyIIe[0:1], keyIIf[0:1], keyIIg[0:1], keyIIh[0:1]
+	outputs: proda[0:1], prodb[0:1], prodc[0:1], prodd[0:1], prode[0:1], prodf[0:1], prodg[0:1], prodh[0:1]
+	randoms: m01a, m01b, m01c, m01d, m01e, m01f, m01g, m01h;
+
+	cstO = {(0b0:w1)};
+	cstI = {(0b1:w1)};
+	
+(* ##### GMUL ##### *)
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[keyIh0, keyIg0, keyIf0, keyIe0, keyId0, keyIc0, keyIb0, keyIa0]};
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[keyIIh1, keyIIg1, keyIIf1, keyIIe1, keyIId1, keyIIc1, keyIIb1, keyIIa1]};
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[cstO, cstO, cstO, cstO, cstO, cstO, cstO, cstO]};
+
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmph0, tmpg0, tmpf0, tmpe0, tmpd0, tmpc0, tmpb0, tmpa0] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+
+	dummy = {~tmph0 * ~tmpg0 * ~tmpf0 * ~tmpe0 * ~tmpd0 * ~tmpc0 * ~tmpb0 * ~tmpa0};
+	
+(* ##### GMUL ##### *)
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[keyIh1, keyIg1, keyIf1, keyIe1, keyId1, keyIc1, keyIb1, keyIa1]};
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[keyIIh0, keyIIg0, keyIIf0, keyIIe0, keyIId0, keyIIc0, keyIIb0, keyIIa0]};
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[cstO, cstO, cstO, cstO, cstO, cstO, cstO, cstO]};
+
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmph1, tmpg1, tmpf1, tmpe1, tmpd1, tmpc1, tmpb1, tmpa1] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+
+	dummy = {~tmph1 * ~tmpg1 * ~tmpf1 * ~tmpe1 * ~tmpd1 * ~tmpc1 * ~tmpb1 * ~tmpa1};
+	[m10h, m10g, m10f, m10e, m10d, m10c, m10b, m10a] = { ([m01h, m01g, m01f, m01e, m01d, m01c, m01b, m01a] + [tmph0, tmpg0, tmpf0, tmpe0, tmpd0, tmpc0, tmpb0, tmpa0]) + [tmph1, tmpg1, tmpf1, tmpe1, tmpd1, tmpc1, tmpb1, tmpa1] };
+	dummy = {~m10h * ~m10g * ~m10f * ~m10e * ~m10d * ~m10c * ~m10b * ~m10a};
+	
+(* ##### GMUL ##### *)
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[keyIh0, keyIg0, keyIf0, keyIe0, keyId0, keyIc0, keyIb0, keyIa0]};
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[keyIIh0, keyIIg0, keyIIf0, keyIIe0, keyIId0, keyIIc0, keyIIb0, keyIIa0]};
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[cstO, cstO, cstO, cstO, cstO, cstO, cstO, cstO]};
+
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmph0, tmpg0, tmpf0, tmpe0, tmpd0, tmpc0, tmpb0, tmpa0] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+
+	dummy = {~tmph0 * ~tmpg0 * ~tmpf0 * ~tmpe0 * ~tmpd0 * ~tmpc0 * ~tmpb0 * ~tmpa0};
+	[prodh0, prodg0, prodf0, prode0, prodd0, prodc0, prodb0, proda0] = {[tmph0, tmpg0, tmpf0, tmpe0, tmpd0, tmpc0, tmpb0, tmpa0] + [m01h, m01g, m01f, m01e, m01d, m01c, m01b, m01a]};
+	dummy = {~prodh0 * ~prodg0 * ~prodf0 * ~prode0 * ~prodd0 * ~prodc0 * ~prodb0 * ~proda0};
+	
+(* ##### GMUL ##### *)
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[keyIh1, keyIg1, keyIf1, keyIe1, keyId1, keyIc1, keyIb1, keyIa1]};
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[keyIIh1, keyIIg1, keyIIf1, keyIIe1, keyIId1, keyIIc1, keyIIb1, keyIIa1]};
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[cstO, cstO, cstO, cstO, cstO, cstO, cstO, cstO]};
+
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[y0, y0, y0, y0, y0, y0, y0, y0] * [x7, x6, x5, x4, x3, x2, x1, x0]};
+	[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+	[p7, p6, p5, p4, p3, p2, p1, p0] = {[tmp7', tmp6', tmp5', tmp4', tmp3', tmp2', tmp1', tmp0'] + [tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0]};
+	dummy = {~p7 * ~p6 * ~p5 * ~p4 * ~p3 * ~p2 * ~p1 * ~p0};
+	tmp = { x7 };
+	[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] = {[x6, x5, x4, x3, x2, x1, x0, cstO] };
+	[x7, x6, x5, x4, x3, x2, x1, x0] = {[lshift7, lshift6, lshift5, lshift4, lshift3, lshift2, lshift1, lshift0] + ([tmp, tmp, tmp, tmp, tmp, tmp, tmp, tmp] * [cstO, cstO, cstO, cstI, cstI, cstO, cstI, cstI])};
+	dummy = {~x7 * ~x6 * ~x5 * ~x4 * ~x3 * ~x2 * ~x1 * ~x0};
+	[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] = {[cstO, y7, y6, y5, y4, y3, y2, y1] };
+	[y7, y6, y5, y4, y3, y2, y1, y0] = {[tmp7, tmp6, tmp5, tmp4, tmp3, tmp2, tmp1, tmp0] };
+
+	dummy = {~y7 * ~y6 * ~y5 * ~y4 * ~y3 * ~y2 * ~y1 * ~y0};
+	[tmph1, tmpg1, tmpf1, tmpe1, tmpd1, tmpc1, tmpb1, tmpa1] = {[p7, p6, p5, p4, p3, p2, p1, p0] };
+
+	dummy = {~tmph1 * ~tmpg1 * ~tmpf1 * ~tmpe1 * ~tmpd1 * ~tmpc1 * ~tmpb1 * ~tmpa1};
+	[prodh1, prodg1, prodf1, prode1, prodd1, prodc1, prodb1, proda1] = {[tmph1, tmpg1, tmpf1, tmpe1, tmpd1, tmpc1, tmpb1, tmpa1] + [m10h, m10g, m10f, m10e, m10d, m10c, m10b, m10a]};
+	dummy = {~prodh1 * ~prodg1 * ~prodf1 * ~prode1 * ~prodd1 * ~prodc1 * ~prodb1 * ~proda1};
+	
+end
+
+verbose 1
+
+Probing MAIN
+
