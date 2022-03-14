@@ -2,7 +2,7 @@
 # MaskedVerifBench: Verification of Benchmarks Composed of Masked Programs
 
 MaskedVerifBench is a set of masked programs for the following tools: LeakageVerif [1], maskVerif [2] and QMVerif [3].
-It was used in the article presenting LeakageVerif for the comparison of the different tools, which are all designed to check for leakages in symbolic expressions of masked programs.
+It was used in the article presenting LeakageVerif for the comparison of the different tools, which are all designed to check for leakages in symbolic expressions of masked programs. MaskedVerifBench is a joint work with Etienne Pons.
 
 ## Benchmarks List
 
